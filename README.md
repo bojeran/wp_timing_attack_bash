@@ -1,2 +1,2 @@
-# wp_timing_attack_batch
+# wp_timing_attack_bash
 "Sichere Hadware" project 2015/2016
